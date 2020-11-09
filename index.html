@@ -1,0 +1,281 @@
+<!DOCTYPE html>
+<html>
+<head><style type="text/css">
+	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+<style>
+
+	}
+	.cartbtn{
+
+		 position: relative;
+  background-color: #4CAF50;
+  color: white;
+  padding: 16px;
+  font-size: 14px;
+  border: none;
+  cursor: pointer;
+  width: 100%;
+	}
+	
+.featured{
+margin: 70px, 0;
+height: 1000px;
+width: 300px;
+border: thin;
+display: inline-block;
+
+
+}
+.dropthegun { 
+height:50px;
+ width:100%;
+background-color: pink;
+
+}
+dropthegun.sticky{
+
+
+  position: -webkit-sticky; /* Safari */
+  position: sticky;
+  top: 0;
+
+}
+.cart{
+ position: absolute; 
+ top: 0px;
+ right: 50px;
+  background-color: #4CAF50;
+  color: white;
+  padding: 16px;
+  font-size: 14px;
+  border: none;
+  cursor: pointer;	
+}
+
+/* Style The Dropdown Button */
+.dropbtn {	
+ position: sticky;
+  background-color: #4CAF50;
+  color: white;
+  padding: 16px;
+  font-size: 14px;
+  border: none;
+  cursor: pointer;
+  width: 100%;
+}
+
+/* The container <div> - needed to position the dropdown content */
+.dropdown {
+  position: relative;
+  display: inline-block;
+}
+
+/* Dropdown Content */
+.dropdown-content {
+  display: none;
+  position: absolute;
+  background-color: #f9f9f9;
+  min-width: 160px;
+  box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
+  z-index: 1;
+}
+
+/* Links inside the dropdown */
+.dropdown-content a {
+  color: black;
+  padding: 12px 16px;
+  text-decoration: none;
+  display: block;
+}
+
+/* Change color of dropdown links on hover */
+.dropdown-content a:hover {background-color: #f1f1f1}
+
+/* Show the dropdown menu on hover */
+.dropdown:hover .dropdown-content {
+  display: block;
+}
+
+/* Change the background color of the dropdown button when the dropdown content is shown */
+.dropdown:hover .dropbtn {
+  background-color: #3e8e41;
+}
+</style>
+
+	<meta charset="utf-8"/>
+	<!-- <meta http-equiv="X-UA-Compatible" content="IE=edge"/> -->
+	
+	<link rel="stylesheet" href="index.css"/>
+	<link rel="stylesheet" type="text/css" href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css"/>
+	<script>
+		
+		function Delete(e){
+			let items = [];
+			JSON.parse(localStorage.getItem('items')).map(data=>{
+				if(data.id != e.parentElement.parentElement.children[0].textContent){
+					
+					items.push(data);
+
+				}
+			});
+			localStorage.setItem('items',JSON.stringify(items));
+			window.location.reload();
+		};
+	</script>
+</head>
+<body>
+
+	<div class="main">
+		<header id="header" &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; class="header">
+			<h1>MY SHOPPING SITE</h1>
+			<div class="iconShopping">
+				<p>0</p>
+				<i class="fa fa-shopping-cart"></i>
+			</div>
+		</header><!-- /header -->
+		<div class="dropthegun">
+<div class="dropdown">
+  <button class="dropbtn">Gents</button>
+  <div class="dropdown-content">
+    <a href="C:\Users\hp\Documents\uu\gents\gentsshirt.html">Shirts</a>
+    <a href="C:\Users\hp\Documents\uu\gents\gentsjeans.html">Jeans</a>
+    <a href="C:\Users\hp\Documents\uu\gents\gentsshoes.html">Shoes</a>
+  </div>
+</div>
+<div class="dropdown">
+  <button class="dropbtn">Women</button>
+  <div class="dropdown-content">
+    <a href="C:\Users\hp\Documents\uu\women\womenshirts.html">Shirts</a>
+    <a href="C:\Users\hp\Documents\uu\women\womenjeans.html">Jeans</a>
+    <a href="C:\Users\hp\Documents\uu\women\womenshoes.html">Shoes</a>
+  </div>
+</div>
+<div class="dropdown">
+  <button class="dropbtn">Kids</button>
+  <div class="dropdown-content">
+    <a href="file:///C:/Users/hp/Documents/uu/kids/kidsshirt.html">Shirts</a>
+    <a href="file:///C:/Users/hp/Documents/uu/kids/kidsjeans.html">Jeans</a>
+    <a href="file:///C:/Users/hp/Documents/uu/kids/kidsshoes.html">Shoes</a>
+  </div>
+
+</div>
+
+</div>
+
+ 	<div class="w3-content w3-section" style="max-width:100%">
+  <img class="mySlides" src="C:\Users\hp\Documents\uu\slide\project2.jpg" style="width:100%" height="400px">
+  <img class="mySlides" src="C:\Users\hp\Documents\uu\slide\project3.jpg" style="width:100%" height="400px">
+  <img class="mySlides" src="C:\Users\hp\Documents\uu\slide\project4.jpg" style="width:100%" height="400px">
+	<img class="mySlides" src="C:\Users\hp\Documents\uu\slide\project5.jpg" style="width:100%" height="400px">
+	<img class="mySlides" src="C:\Users\hp\Documents\uu\slide\project6.jpg" style="width:100%" height="400px">
+</div>
+
+
+<script>
+
+
+var myIndex = 0;
+carousel();
+
+function carousel() {
+  var i;
+  var x = document.getElementsByClassName("mySlides");
+  for (i = 0; i < x.length; i++) {
+    x[i].style.display = "none";  
+  }
+  myIndex++;
+  if (myIndex > x.length) {myIndex = 1}    
+  x[myIndex-1].style.display = "block";  
+  setTimeout(carousel, 2000); // Change image every 2 seconds
+}
+//new//
+function addProduct(){
+    let products = [];
+    if(localStorage.getItem('products')){
+        products = JSON.parse(localStorage.getItem('products'));
+    }
+    products.push({'productId' : productId + 1, image : '<imageLink>'});
+    localStorage.setItem('products', JSON.stringify(products));
+}
+function removeProduct(productId){
+
+    // Your logic for your app.
+
+    // strore products in local storage
+
+    let storageProducts = JSON.parse(localStorage.getItem('products'));
+    let products = storageProducts.filter(product => product.productId !== productId );
+    localStorage.setItem('products', JSON.stringify(products));
+}
+
+
+
+</script><br>
+<h2><b>&nbsp;&nbsp;&nbsp;&nbsp;Featured</b></h2>
+<div class="main">
+		<div class="itemsBox">
+			<div class="item">
+				<img src="C:\Users\hp\Documents\pazheri\slide\keagan-henman-xPJYL0l5Ii8-unsplash.jpg" alt="Men's Solid Regular Fit T-Shirt"/>
+				<div class="itemInfo">
+					<h1>UFO (men's shirt)</h1>
+					<p>₹<span>900</span></p>
+					<a href="#" title="add to cart" class="attToCart">Add to cart</a>
+				</div>
+			</div>
+			<div class="item">
+				<img src="C:\Users\hp\Documents\pazheri\slide\waldemar-brandt-UP9DtTjRYpI-unsplash.jpg" alt="Men's Solid Regular Fit T-Shirt"/>
+				<div class="itemInfo">
+					<h1>DIESEL (men's jeans)</h1>
+					<p>₹<span>1600</span></p>
+					<a href="#" title="add to cart" class="attToCart">Add to cart</a>
+				</div>
+			</div>
+			<div class="item">
+				<img src="C:\Users\hp\Documents\uu\pics\gents\shoes\felipepelaquim-SJTIIUkSI08-unsplash.jpg"/>
+				<div class="itemInfo">
+					<h1>ADIDAS (men's shoe)</h1>
+					<p>₹<span>1600</span></p>
+					<a href="#" title="add to cart" class="attToCart">Add to cart</a>
+				</div>
+			</div>
+			<div class="item">
+				<img src="C:\Users\hp\Documents\uu\pics\women\shirts\gabriel-brito-0W0TazXPeHg-unsplash.jpg"/>
+				<div class="itemInfo">
+					<h1>FABINDIA (women's shirt)</h1>
+					<p>₹<span>1800</span></p>
+					<a href="#" title="add to cart" class="attToCart">Add to cart</a>
+				</div>
+			</div>
+			<div class="item">
+				<img src="C:\Users\hp\Documents\uu\pics\women\jeans\omid-armin--3HP5re8pRQ-unsplash.jpg"/>
+				<div class="itemInfo">
+					<h1>LEE (women's jeans)</h1>
+					<p>₹<span>2700</span></p>
+					<a href="#" title="add to cart" class="attToCart">Add to cart</a>
+				</div>
+			</div>
+			<div class="item">
+				<img src="C:\Users\hp\Documents\uu\pics\kids\shirts\jen-theodore-CtdL0JQPBN4-unsplash.jpg"/>
+				<div class="itemInfo">
+					<h1>MAX (kid's shirt)</h1>
+					<p>₹<span>1500</span></p>
+					<a href="#" title="add to cart" class="attToCart">Add to cart</a>
+				</div>
+			</div>
+			
+		</div>
+	</div>
+</div>
+	<div class="cartBox">
+		<div class="cart">
+			<i class="fa fa-close"></i>
+			<h1>Cart</h1>
+			<table border="1"></table>
+		</div>
+	</div>
+
+
+	<!-- script -->
+	<script src="index.js"></script>
+</body>
+</html>
