@@ -1,6 +1,7 @@
 package com.mint.entity;
 
 import jakarta.persistence.*;
+import java.util.List;
 
 @Entity // Đánh dấu class này là một Thực thể kết nối với Database
 @Table(name = "users") // Tên bảng lưu trong Database (thường để số nhiều)
@@ -19,7 +20,9 @@ public class User {
     @Column(nullable = false)
     private String password;
 
-    // TODO: Chúng ta sẽ thêm phần code thiết lập Quan hệ (Relations) với BankConnection ở các bước sau
+    // QUAN HỆ 1-NHIỀU: 1 Người dùng có thể có nhiều lượt liên kết tài khoản ngân hàng
+    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<BankConnection> bankConnections;
 
     // --- Getters và Setters ---
     // (Bắt buộc phải có để Spring Boot đọc/ghi dữ liệu)
@@ -35,4 +38,7 @@ public class User {
 
     public String getPassword() { return password; }
     public void setPassword(String password) { this.password = password; }
+
+    public List<BankConnection> getBankConnections() { return bankConnections; }
+    public void setBankConnections(List<BankConnection> bankConnections) { this.bankConnections = bankConnections; }
 }
