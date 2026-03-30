@@ -1,82 +1,114 @@
-# Mint - PostgreSQL Setup Guide
+# PostgreSQL Setup — Mint Project
 
-## Prerequisites
-- Docker and Docker Compose installed
+This project uses PostgreSQL inside Docker for local development.
+Each teammate runs their own local container to ensure consistency.
+
+---
+
+## Requirements
+
+- [Docker Desktop](https://www.docker.com/products/docker-desktop/)
 - Java 17+
-- Maven 3.8+
+- IntelliJ IDEA (or any IDE)
 
-## Quick Start
-
-### 1. Start PostgreSQL with Docker Compose
+Verify Docker is installed:
 
 ```bash
-docker-compose up -d
+docker --version
 ```
 
-This will:
-- Start a PostgreSQL container named `mint_postgres`
-- Create a database named `mintdb`
-- Set credentials: username `postgres`, password `postgres`
-- Listen on `localhost:5432`
+---
 
-### 2. Build the Application
+## 1. Start the database
+
+From the project root (same folder as `docker-compose.yml`):
 
 ```bash
-mvn clean package
+docker compose up -d
 ```
 
-### 3. Run the Application
+Verify the container is running:
 
 ```bash
-java -jar target/mint-0.0.1-SNAPSHOT.jar
+docker ps
 ```
 
-The application will start on `http://localhost:8080`
+You should see a container named `mint-postgres`.
 
-### 4. Access the Application
+---
 
-- Application: `http://localhost:8080`
-- PostgreSQL connection: `localhost:5432`
+## 2. Connection details
 
-## Database Configuration
+| Property | Value |
+|---|---|
+| Host | `localhost` |
+| Port | `5432` |
+| Database | `mint_db` |
+| Username | `mint_user` |
+| Password | `mint_password` |
+| Test database | `mint_test` |
 
-Database credentials can be modified in `src/main/resources/application.properties`:
+---
 
-```properties
-spring.datasource.url=jdbc:postgresql://localhost:5432/mintdb
-spring.datasource.username=postgres
-spring.datasource.password=postgres
-```
+## 3. Connect in IntelliJ
 
-## Useful Docker Commands
+1. Go to **View → Tool Windows → Database**
+2. Click **+ → Data Source → PostgreSQL**
+3. Enter the connection details from the table above
+4. Click **Download missing drivers** if prompted
+5. Click **Test Connection**, then **OK**
+
+---
+
+## 4. Run the application
 
 ```bash
-# Check PostgreSQL status
-docker-compose ps
-
-# View PostgreSQL logs
-docker-compose logs postgres
-
-# Stop PostgreSQL
-docker-compose down
-
-# Stop and remove data (reset database)
-docker-compose down -v
-
-# Connect to PostgreSQL directly
-docker exec -it mint_postgres psql -U postgres -d mintdb
+./mvnw spring-boot:run
 ```
+
+The app starts at `http://localhost:8080`.
+
+---
+
+## 5. Run tests
+
+Tests connect to a separate `mint_test` database (configured in `src/test/resources/application-test.properties`). Make sure the Docker container is running before executing tests.
+
+```bash
+./mvnw test
+```
+
+---
+
+## Useful Docker commands
+
+```bash
+# Check container status
+docker compose ps
+
+# View logs
+docker compose logs postgres
+
+# Stop the container
+docker compose down
+
+# Stop and wipe all data (full reset)
+docker compose down -v
+docker compose up -d
+
+# Open a PostgreSQL shell
+docker exec -it mint-postgres psql -U mint_user -d mint_db
+```
+
+---
 
 ## Troubleshooting
 
-**Cannot connect to PostgreSQL:**
-- Ensure Docker daemon is running
-- Check if port 5432 is not already in use
-- Run `docker-compose ps` to verify container is running
+**Cannot connect to PostgreSQL**
+- Ensure Docker Desktop is running
+- Check port 5432 is not already in use: `lsof -i :5432`
+- Run `docker compose ps` to verify the container status
 
-**Database reset needed:**
-```bash
-docker-compose down -v  # Remove volume to reset all data
-docker-compose up -d    # Start fresh
-```
-
+**Application fails to start**
+- Confirm credentials in `src/main/resources/application.properties` match the table above
+- Try a full reset: `docker compose down -v && docker compose up -d`
