@@ -51,15 +51,17 @@ class BankConnectionIntegrationTest {
     @BeforeEach
     void setUp() {
         // Persist test user/bank so service-level methods can use real DB records.
-        testUser = new User();
-        testUser.setUsername("integrationtest_" + System.nanoTime());
-        testUser.setEmail("integration_" + System.nanoTime() + "@test.com");
-        testUser.setPassword("password123");
+        testUser = User.builder()
+                .username("integrationtest_" + System.nanoTime())
+                .email("integration_" + System.nanoTime() + "@test.com")
+                .password("password123")
+                .build();
         entityManager.persist(testUser);
 
-        testBank = new Bank();
-        testBank.setName("Integration Test Bank");
-        testBank.setApiEndpoint("https://api.testbank.com");
+        testBank = Bank.builder()
+                .name("Integration Test Bank")
+                .apiEndpoint("https://api.testbank.com")
+                .build();
         entityManager.persist(testBank);
         entityManager.flush();
     }

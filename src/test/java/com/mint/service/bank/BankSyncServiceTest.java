@@ -2,15 +2,11 @@ package com.mint.service.bank;
 
 import com.mint.dto.BankAccountDto;
 import com.mint.dto.BankTransactionDto;
-import com.mint.entity.Bank;
 import com.mint.entity.BankConnection;
 import com.mint.entity.ConnectionStatus;
 import com.mint.entity.SyncStatus;
-import com.mint.entity.User;
-import com.mint.exception.BankSyncException;
 import com.mint.exception.ConnectionTimeoutException;
 import com.mint.exception.RateLimitException;
-import com.mint.repository.BankConnectionRepository;
 import com.mint.service.bank.api.BankApiClient;
 import com.mint.test.util.TestDataBuilder;
 import org.junit.jupiter.api.BeforeEach;
@@ -27,7 +23,6 @@ import java.util.List;
 import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.*;
-import static org.mockito.ArgumentMatchers.*;
 import static org.mockito.Mockito.*;
 import static org.mockito.Mockito.lenient;
 
@@ -42,21 +37,14 @@ class BankSyncServiceTest {
     private BankApiClient bankApiClient;
     
     @Mock
-    private BankConnectionRepository bankConnectionRepository;
-    
-    @Mock
     private BankConnectionService bankConnectionService;
     
     private BankSyncService bankSyncService;
-    private User testUser;
-    private Bank testBank;
     private BankConnection testConnection;
     
     @BeforeEach
     void setUp() {
         bankSyncService = new BankSyncService(bankApiClient, bankConnectionService);
-        testUser = TestDataBuilder.buildUser();
-        testBank = TestDataBuilder.buildBank();
         testConnection = TestDataBuilder.buildBankConnection();
     }
     
@@ -66,25 +54,25 @@ class BankSyncServiceTest {
         String credentials = "test_credentials";
         String mockToken = "mock_token_12345";
         
-        BankAccountDto mockAccount = new BankAccountDto(
-            testConnection.getAccountId(),
-            "CHECKING",
-            "USD",
-            new BigDecimal("5000.00"),
-            LocalDateTime.now()
-        );
-        
+        BankAccountDto mockAccount = BankAccountDto.builder()
+            .accountId(testConnection.getAccountId())
+            .accountType("CHECKING")
+            .currency("USD")
+            .balance(new BigDecimal("5000.00"))
+            .lastUpdated(LocalDateTime.now())
+            .build();
+
         List<BankTransactionDto> mockTransactions = new ArrayList<>();
-        mockTransactions.add(new BankTransactionDto(
-            "TXN_001",
-            testConnection.getAccountId(),
-            new BigDecimal("100.00"),
-            "USD",
-            "Test transaction",
-            LocalDateTime.now(),
-            "COMPLETED"
-        ));
-        
+        mockTransactions.add(BankTransactionDto.builder()
+            .transactionId("TXN_001")
+            .accountId(testConnection.getAccountId())
+            .amount(new BigDecimal("100.00"))
+            .currency("USD")
+            .description("Test transaction")
+            .transactionDate(LocalDateTime.now())
+            .status("COMPLETED")
+            .build());
+
         // Mock API calls
         when(bankApiClient.authenticate(credentials)).thenReturn(mockToken);
         when(bankApiClient.fetchAccount(testConnection.getAccountId(), mockToken)).thenReturn(mockAccount);
@@ -147,14 +135,14 @@ class BankSyncServiceTest {
         String mockToken = "mock_token_12345";
         
         // Account with missing ID
-        BankAccountDto invalidAccount = new BankAccountDto(
-            null, // Missing account ID
-            "CHECKING",
-            "USD",
-            new java.math.BigDecimal("5000.00"),
-            java.time.LocalDateTime.now()
-        );
-        
+        BankAccountDto invalidAccount = BankAccountDto.builder()
+            .accountId(null) // Missing account ID
+            .accountType("CHECKING")
+            .currency("USD")
+            .balance(new java.math.BigDecimal("5000.00"))
+            .lastUpdated(java.time.LocalDateTime.now())
+            .build();
+
         when(bankApiClient.authenticate(credentials)).thenReturn(mockToken);
         when(bankApiClient.fetchAccount(testConnection.getAccountId(), mockToken)).thenReturn(invalidAccount);
         when(bankConnectionService.updateSyncStatus(ArgumentMatchers.anyLong(), ArgumentMatchers.any(), ArgumentMatchers.any()))
@@ -175,14 +163,14 @@ class BankSyncServiceTest {
         String mockToken = "mock_token_12345";
         
         // Account with negative balance (not a credit account)
-        BankAccountDto invalidAccount = new BankAccountDto(
-            testConnection.getAccountId(),
-            "CHECKING",
-            "USD",
-            new java.math.BigDecimal("-5000.00"), // Negative balance
-            java.time.LocalDateTime.now()
-        );
-        
+        BankAccountDto invalidAccount = BankAccountDto.builder()
+            .accountId(testConnection.getAccountId())
+            .accountType("CHECKING")
+            .currency("USD")
+            .balance(new java.math.BigDecimal("-5000.00")) // Negative balance
+            .lastUpdated(java.time.LocalDateTime.now())
+            .build();
+
         when(bankApiClient.authenticate(credentials)).thenReturn(mockToken);
         when(bankApiClient.fetchAccount(testConnection.getAccountId(), mockToken)).thenReturn(invalidAccount);
         when(bankConnectionService.updateSyncStatus(ArgumentMatchers.anyLong(), ArgumentMatchers.any(), ArgumentMatchers.any()))
@@ -202,26 +190,26 @@ class BankSyncServiceTest {
         String credentials = "test_credentials";
         String mockToken = "mock_token_12345";
         
-        BankAccountDto mockAccount = new BankAccountDto(
-            testConnection.getAccountId(),
-            "CHECKING",
-            "USD",
-            new java.math.BigDecimal("5000.00"),
-            java.time.LocalDateTime.now()
-        );
-        
+        BankAccountDto mockAccount = BankAccountDto.builder()
+            .accountId(testConnection.getAccountId())
+            .accountType("CHECKING")
+            .currency("USD")
+            .balance(new java.math.BigDecimal("5000.00"))
+            .lastUpdated(java.time.LocalDateTime.now())
+            .build();
+
         // Transaction with negative amount
         java.util.List<BankTransactionDto> invalidTransactions = new java.util.ArrayList<>();
-        invalidTransactions.add(new BankTransactionDto(
-            "TXN_001",
-            testConnection.getAccountId(),
-            new java.math.BigDecimal("-100.00"), // Negative amount
-            "USD",
-            "Invalid transaction",
-            java.time.LocalDateTime.now(),
-            "COMPLETED"
-        ));
-        
+        invalidTransactions.add(BankTransactionDto.builder()
+            .transactionId("TXN_001")
+            .accountId(testConnection.getAccountId())
+            .amount(new java.math.BigDecimal("-100.00")) // Negative amount
+            .currency("USD")
+            .description("Invalid transaction")
+            .transactionDate(java.time.LocalDateTime.now())
+            .status("COMPLETED")
+            .build());
+
         when(bankApiClient.authenticate(credentials)).thenReturn(mockToken);
         when(bankApiClient.fetchAccount(testConnection.getAccountId(), mockToken)).thenReturn(mockAccount);
         when(bankApiClient.fetchTransactions(ArgumentMatchers.anyString(), ArgumentMatchers.anyString(), 
