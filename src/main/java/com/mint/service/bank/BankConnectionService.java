@@ -48,15 +48,16 @@ public class BankConnectionService {
             throw new BankConnectionException("Bank connection already exists for this user and bank");
         }
         
-        BankConnection connection = new BankConnection();
-        connection.setUser(user);
-        connection.setBank(bank);
-        connection.setAccountId(accountId);
-        connection.setStatus(ConnectionStatus.PENDING);
-        connection.setSyncStatus(SyncStatus.IDLE);
-        connection.setSyncFailureCount(0);
-        connection.setCreatedAt(LocalDateTime.now());
-        connection.setUpdatedAt(LocalDateTime.now());
+        BankConnection connection = BankConnection.builder()
+            .user(user)
+            .bank(bank)
+            .accountId(accountId)
+            .status(ConnectionStatus.PENDING)
+            .syncStatus(SyncStatus.IDLE)
+            .syncFailureCount(0)
+            .createdAt(LocalDateTime.now())
+            .updatedAt(LocalDateTime.now())
+            .build();
         
         BankConnection saved = bankConnectionRepository.save(connection);
         logger.info("Created new bank connection: userId={}, bankId={}, accountId={}", user.getId(), bank.getId(), accountId);

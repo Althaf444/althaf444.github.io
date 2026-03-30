@@ -15,17 +15,41 @@ public class BankTransactionDto {
     private LocalDateTime transactionDate;
     private String status; // PENDING, COMPLETED, FAILED
 
-    public BankTransactionDto() {}
+    // Required for frameworks (e.g. Jackson deserialization)
+    protected BankTransactionDto() {}
 
-    public BankTransactionDto(String transactionId, String accountId, BigDecimal amount, String currency, 
-                              String description, LocalDateTime transactionDate, String status) {
-        this.transactionId = transactionId;
-        this.accountId = accountId;
-        this.amount = amount;
-        this.currency = currency;
-        this.description = description;
-        this.transactionDate = transactionDate;
-        this.status = status;
+    private BankTransactionDto(Builder builder) {
+        this.transactionId = builder.transactionId;
+        this.accountId = builder.accountId;
+        this.amount = builder.amount;
+        this.currency = builder.currency;
+        this.description = builder.description;
+        this.transactionDate = builder.transactionDate;
+        this.status = builder.status;
+    }
+
+    public static Builder builder() {
+        return new Builder();
+    }
+
+    public static class Builder {
+        private String transactionId;
+        private String accountId;
+        private BigDecimal amount;
+        private String currency;
+        private String description;
+        private LocalDateTime transactionDate;
+        private String status;
+
+        public Builder transactionId(String transactionId) { this.transactionId = transactionId; return this; }
+        public Builder accountId(String accountId) { this.accountId = accountId; return this; }
+        public Builder amount(BigDecimal amount) { this.amount = amount; return this; }
+        public Builder currency(String currency) { this.currency = currency; return this; }
+        public Builder description(String description) { this.description = description; return this; }
+        public Builder transactionDate(LocalDateTime transactionDate) { this.transactionDate = transactionDate; return this; }
+        public Builder status(String status) { this.status = status; return this; }
+
+        public BankTransactionDto build() { return new BankTransactionDto(this); }
     }
 
     // Getters and Setters
@@ -50,4 +74,3 @@ public class BankTransactionDto {
     public String getStatus() { return status; }
     public void setStatus(String status) { this.status = status; }
 }
-

@@ -13,14 +13,35 @@ public class BankAccountDto {
     private BigDecimal balance;
     private LocalDateTime lastUpdated;
 
-    public BankAccountDto() {}
+    // Required for frameworks (e.g. Jackson deserialization)
+    protected BankAccountDto() {}
 
-    public BankAccountDto(String accountId, String accountType, String currency, BigDecimal balance, LocalDateTime lastUpdated) {
-        this.accountId = accountId;
-        this.accountType = accountType;
-        this.currency = currency;
-        this.balance = balance;
-        this.lastUpdated = lastUpdated;
+    private BankAccountDto(Builder builder) {
+        this.accountId = builder.accountId;
+        this.accountType = builder.accountType;
+        this.currency = builder.currency;
+        this.balance = builder.balance;
+        this.lastUpdated = builder.lastUpdated;
+    }
+
+    public static Builder builder() {
+        return new Builder();
+    }
+
+    public static class Builder {
+        private String accountId;
+        private String accountType;
+        private String currency;
+        private BigDecimal balance;
+        private LocalDateTime lastUpdated;
+
+        public Builder accountId(String accountId) { this.accountId = accountId; return this; }
+        public Builder accountType(String accountType) { this.accountType = accountType; return this; }
+        public Builder currency(String currency) { this.currency = currency; return this; }
+        public Builder balance(BigDecimal balance) { this.balance = balance; return this; }
+        public Builder lastUpdated(LocalDateTime lastUpdated) { this.lastUpdated = lastUpdated; return this; }
+
+        public BankAccountDto build() { return new BankAccountDto(this); }
     }
 
     // Getters and Setters
@@ -39,4 +60,3 @@ public class BankAccountDto {
     public LocalDateTime getLastUpdated() { return lastUpdated; }
     public void setLastUpdated(LocalDateTime lastUpdated) { this.lastUpdated = lastUpdated; }
 }
-

@@ -81,13 +81,13 @@ public class MockBankApiClient implements BankApiClient {
             throw new IllegalArgumentException("Invalid account ID");
         }
         
-        BankAccountDto account = new BankAccountDto(
-            accountId,
-            "CHECKING",
-            "USD",
-            new BigDecimal(random.nextInt(100000)).setScale(2, BigDecimal.ROUND_HALF_UP),
-            LocalDateTime.now()
-        );
+        BankAccountDto account = BankAccountDto.builder()
+            .accountId(accountId)
+            .accountType("CHECKING")
+            .currency("USD")
+            .balance(new BigDecimal(random.nextInt(100000)).setScale(2, BigDecimal.ROUND_HALF_UP))
+            .lastUpdated(LocalDateTime.now())
+            .build();
         
         logger.info("Account details retrieved: accountId={}, balance={}", accountId, account.getBalance());
         return account;
@@ -185,15 +185,15 @@ public class MockBankApiClient implements BankApiClient {
         LocalDateTime now = LocalDateTime.now();
         
         for (int i = 0; i < 5; i++) {
-            transactions.add(new BankTransactionDto(
-                "TXN_" + System.currentTimeMillis() + "_" + i,
-                accountId,
-                new BigDecimal(random.nextInt(5000)).setScale(2, BigDecimal.ROUND_HALF_UP),
-                "USD",
-                "Mock transaction " + (i + 1),
-                now.minusDays(i),
-                "COMPLETED"
-            ));
+            transactions.add(BankTransactionDto.builder()
+                .transactionId("TXN_" + System.currentTimeMillis() + "_" + i)
+                .accountId(accountId)
+                .amount(new BigDecimal(random.nextInt(5000)).setScale(2, BigDecimal.ROUND_HALF_UP))
+                .currency("USD")
+                .description("Mock transaction " + (i + 1))
+                .transactionDate(now.minusDays(i))
+                .status("COMPLETED")
+                .build());
         }
         
         return transactions;

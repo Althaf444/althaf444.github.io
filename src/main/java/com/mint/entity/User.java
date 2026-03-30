@@ -24,9 +24,40 @@ public class User {
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<BankConnection> bankConnections;
 
+    // Required by JPA
+    protected User() {}
+
+    private User(Builder builder) {
+        this.id = builder.id;
+        this.username = builder.username;
+        this.email = builder.email;
+        this.password = builder.password;
+        this.bankConnections = builder.bankConnections;
+    }
+
+    public static Builder builder() {
+        return new Builder();
+    }
+
+    public static class Builder {
+        private Long id;
+        private String username;
+        private String email;
+        private String password;
+        private List<BankConnection> bankConnections;
+
+        public Builder id(Long id) { this.id = id; return this; }
+        public Builder username(String username) { this.username = username; return this; }
+        public Builder email(String email) { this.email = email; return this; }
+        public Builder password(String password) { this.password = password; return this; }
+        public Builder bankConnections(List<BankConnection> bankConnections) { this.bankConnections = bankConnections; return this; }
+
+        public User build() { return new User(this); }
+    }
+
     // --- Getters và Setters ---
     // (Bắt buộc phải có để Spring Boot đọc/ghi dữ liệu)
-    
+
     public Long getId() { return id; }
     public void setId(Long id) { this.id = id; }
 
