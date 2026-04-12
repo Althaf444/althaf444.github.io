@@ -136,3 +136,6 @@ buildNumber.properties
 
 # End of https://www.toptal.com/developers/gitignore/api/java,maven,intellij+all
 src/main/resources/application.properties
+
+# Local secrets
+.env
