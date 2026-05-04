@@ -20,6 +20,12 @@ public class User {
     @Column(nullable = false)
     private String password;
 
+    @Column
+    private String mfaSecret;
+
+    @Column(nullable = false)
+    private boolean mfaEnabled = false;
+
     // QUAN HỆ 1-NHIỀU: 1 Người dùng có thể có nhiều lượt liên kết tài khoản ngân hàng
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<BankConnection> bankConnections;
@@ -32,6 +38,8 @@ public class User {
         this.username = builder.username;
         this.email = builder.email;
         this.password = builder.password;
+        this.mfaSecret = builder.mfaSecret;
+        this.mfaEnabled = builder.mfaEnabled;
         this.bankConnections = builder.bankConnections;
     }
 
@@ -44,12 +52,16 @@ public class User {
         private String username;
         private String email;
         private String password;
+        private String mfaSecret;
+        private boolean mfaEnabled;
         private List<BankConnection> bankConnections;
 
         public Builder id(Long id) { this.id = id; return this; }
         public Builder username(String username) { this.username = username; return this; }
         public Builder email(String email) { this.email = email; return this; }
         public Builder password(String password) { this.password = password; return this; }
+        public Builder mfaSecret(String mfaSecret) { this.mfaSecret = mfaSecret; return this; }
+        public Builder mfaEnabled(boolean mfaEnabled) { this.mfaEnabled = mfaEnabled; return this; }
         public Builder bankConnections(List<BankConnection> bankConnections) { this.bankConnections = bankConnections; return this; }
 
         public User build() { return new User(this); }
@@ -69,6 +81,12 @@ public class User {
 
     public String getPassword() { return password; }
     public void setPassword(String password) { this.password = password; }
+
+    public String getMfaSecret() { return mfaSecret; }
+    public void setMfaSecret(String mfaSecret) { this.mfaSecret = mfaSecret; }
+
+    public boolean isMfaEnabled() { return mfaEnabled; }
+    public void setMfaEnabled(boolean mfaEnabled) { this.mfaEnabled = mfaEnabled; }
 
     public List<BankConnection> getBankConnections() { return bankConnections; }
     public void setBankConnections(List<BankConnection> bankConnections) { this.bankConnections = bankConnections; }
