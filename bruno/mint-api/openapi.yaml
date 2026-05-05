@@ -1,0 +1,386 @@
+openapi: 3.0.3
+info:
+  title: Mint API (local)
+  version: 1.0.0
+  description: OpenAPI description generated from project sources to allow Bruno/Postman import for testing.
+servers:
+  - url: http://localhost:8080
+paths:
+  /auth/register:
+    post:
+      summary: Register a new user
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/RegisterRequest'
+      responses:
+        '200':
+          description: User registered
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+  /auth/login:
+    post:
+      summary: Login (supports optional mfaCode)
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/LoginRequest'
+      responses:
+        '200':
+          description: Login response (token may be returned as plain text by current implementation; recommended JSON shape shown)
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/LoginResponse'
+  /auth/mfa/setup:
+    post:
+      summary: Generate MFA secret + QR for a user
+      parameters:
+        - in: query
+          name: userId
+          required: true
+          schema:
+            type: integer
+      responses:
+        '200':
+          description: MFA setup data
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/MfaSetupResponse'
+  /auth/mfa/verify:
+    post:
+      summary: Verify MFA code and enable MFA for user
+      parameters:
+        - in: query
+          name: userId
+          required: true
+          schema:
+            type: integer
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/VerifyMfaRequest'
+      responses:
+        '200':
+          description: MFA enabled
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+  /api/budgets:
+    get:
+      summary: List budgets
+      security:
+        - bearerAuth: []
+      responses:
+        '200':
+          description: Array of budgets
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/BudgetResponse'
+    post:
+      summary: Create budget
+      security:
+        - bearerAuth: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/BudgetRequest'
+      responses:
+        '200':
+          description: Created budget
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/BudgetResponse'
+  /api/budgets/{id}:
+    parameters:
+      - in: path
+        name: id
+        required: true
+        schema:
+          type: integer
+    get:
+      summary: Get budget by id
+      security:
+        - bearerAuth: []
+      responses:
+        '200':
+          description: Budget found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/BudgetResponse'
+    put:
+      summary: Update budget
+      security:
+        - bearerAuth: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/BudgetRequest'
+      responses:
+        '200':
+          description: Updated budget
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/BudgetResponse'
+    delete:
+      summary: Delete budget
+      security:
+        - bearerAuth: []
+      responses:
+        '204':
+          description: Deleted
+  /api/budgets/overview:
+    get:
+      summary: Monthly budget overview
+      security:
+        - bearerAuth: []
+      parameters:
+        - in: query
+          name: year
+          required: true
+          schema:
+            type: integer
+        - in: query
+          name: month
+          required: true
+          schema:
+            type: integer
+      responses:
+        '200':
+          description: Overview
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  totalBudget:
+                    type: number
+                  totalSpent:
+                    type: number
+                  categories:
+                    type: array
+                    items:
+                      type: object
+  /api/transactions:
+    get:
+      summary: List transactions
+      security:
+        - bearerAuth: []
+      responses:
+        '200':
+          description: Array of transactions
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Transaction'
+    post:
+      summary: Create transaction
+      security:
+        - bearerAuth: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Transaction'
+      responses:
+        '200':
+          description: Created transaction
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Transaction'
+  /api/transactions/{id}:
+    parameters:
+      - in: path
+        name: id
+        required: true
+        schema:
+          type: integer
+    get:
+      summary: Get transaction by id
+      security:
+        - bearerAuth: []
+      responses:
+        '200':
+          description: Transaction found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Transaction'
+    put:
+      summary: Update transaction
+      security:
+        - bearerAuth: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Transaction'
+      responses:
+        '200':
+          description: Updated
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Transaction'
+    delete:
+      summary: Delete transaction
+      security:
+        - bearerAuth: []
+      responses:
+        '204':
+          description: Deleted
+  /api/transactions/type/{type}:
+    get:
+      summary: Filter by type (INCOME/EXPENSE)
+      security:
+        - bearerAuth: []
+      parameters:
+        - in: path
+          name: type
+          required: true
+          schema:
+            type: string
+            enum: [INCOME, EXPENSE]
+      responses:
+        '200':
+          description: Filtered list
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Transaction'
+  /api/transactions/category/{category}:
+    get:
+      summary: Filter by category
+      security:
+        - bearerAuth: []
+      parameters:
+        - in: path
+          name: category
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Filtered list
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Transaction'
+components:
+  securitySchemes:
+    bearerAuth:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT
+  schemas:
+    RegisterRequest:
+      type: object
+      required: [username, email, password]
+      properties:
+        username:
+          type: string
+        email:
+          type: string
+        password:
+          type: string
+    LoginRequest:
+      type: object
+      required: [username, password]
+      properties:
+        username:
+          type: string
+        password:
+          type: string
+        mfaCode:
+          type: string
+          nullable: true
+    LoginResponse:
+      type: object
+      properties:
+        token:
+          type: string
+        requiresMfa:
+          type: boolean
+    MfaSetupResponse:
+      type: object
+      properties:
+        secret:
+          type: string
+        qrCodeUrl:
+          type: string
+    VerifyMfaRequest:
+      type: object
+      properties:
+        code:
+          type: string
+    BudgetRequest:
+      type: object
+      required: [category, monthlyLimit]
+      properties:
+        category:
+          type: string
+        monthlyLimit:
+          type: number
+    BudgetResponse:
+      type: object
+      properties:
+        id:
+          type: integer
+        category:
+          type: string
+        monthlyLimit:
+          type: number
+    Transaction:
+      type: object
+      properties:
+        id:
+          type: integer
+        amount:
+          type: number
+          format: decimal
+        date:
+          type: string
+          format: date
+        category:
+          type: string
+        type:
+          type: string
+          enum: [INCOME, EXPENSE]
+security:
+  - bearerAuth: []
+

@@ -1,0 +1,14 @@
+meta {
+  name: Get Budget By ID
+  type: http
+  seq: 7
+}
+
+get {
+  url: {{baseUrl}}/api/budgets/{{budgetId}}
+}
+
+headers {
+  Authorization: Bearer {{token}}
+}
+

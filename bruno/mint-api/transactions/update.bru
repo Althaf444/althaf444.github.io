@@ -1,0 +1,25 @@
+meta {
+  name: Update Transaction
+  type: http
+  seq: 15
+}
+
+put {
+  url: {{baseUrl}}/api/transactions/{{transactionId}}
+  body: json
+}
+
+headers {
+  Authorization: Bearer {{token}}
+  Content-Type: application/json
+}
+
+body:json {
+  {
+    "amount": 99.50,
+    "date": "2026-05-06",
+    "category": "Groceries",
+    "type": "EXPENSE"
+  }
+}
+

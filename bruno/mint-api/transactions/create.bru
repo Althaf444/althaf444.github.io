@@ -1,0 +1,25 @@
+meta {
+  name: Create Transaction
+  type: http
+  seq: 14
+}
+
+post {
+  url: {{baseUrl}}/api/transactions
+  body: json
+}
+
+headers {
+  Authorization: Bearer {{token}}
+  Content-Type: application/json
+}
+
+body:json {
+  {
+    "amount": 84.20,
+    "date": "2026-05-05",
+    "category": "Groceries",
+    "type": "EXPENSE"
+  }
+}
+

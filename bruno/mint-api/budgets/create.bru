@@ -1,0 +1,23 @@
+meta {
+  name: Create Budget
+  type: http
+  seq: 8
+}
+
+post {
+  url: {{baseUrl}}/api/budgets
+  body: json
+}
+
+headers {
+  Authorization: Bearer {{token}}
+  Content-Type: application/json
+}
+
+body:json {
+  {
+    "category": "Groceries",
+    "monthlyLimit": 800
+  }
+}
+
