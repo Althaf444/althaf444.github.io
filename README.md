@@ -19,12 +19,10 @@ A modular budgeting application built with **Spring Boot**, designed as a micros
 ## Tech Stack
 
 - **Java 17**
-- **Spring Boot 4.0.4** (Web, Data JPA, Security, Validation)
+- **Spring Boot 2.7.14** (Web, Data JPA, Security, Validation)
 - **PostgreSQL 16** (via Docker)
 - **Hibernate** (JPA provider)
-- **Lombok**
 - **Maven**
-- **JUnit 5** for testing
 
 ---
 
@@ -56,15 +54,22 @@ This starts a PostgreSQL 16 container at `localhost:5432`.
 ./mvnw spring-boot:run
 ```
 
-### 3. Run tests
+### 3. Test the API with Bruno
 
-```bash
-./mvnw test
+Import the Bruno collection from:
+
+```text
+/Users/zicctor/IdeaProjects/mint/bruno/mint-api
 ```
 
-> Tests use a separate `mint_test` database. Make sure the Docker container is running before executing tests.
+Use the local environment file at `bruno/mint-api/environments/local.bru` and set:
 
----
+- `baseUrl` to your running app, usually `http://localhost:8080`
+- `token` from the `/auth/login` response
+- `userId`, `budgetId`, and `transactionId` from your seed data or earlier create/list responses
+
+Note: `/auth/login` now returns structured JSON: { "token": "<jwt>", "requiresMfa": true|false } so Bruno (and other tools) can extract the token automatically.
+
 
 ## REST API
 

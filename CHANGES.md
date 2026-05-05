@@ -23,7 +23,7 @@ Applied the **Builder Pattern** across all entity and DTO classes to replace tel
 - `transaction/Transaction.java` — Added Lombok `@Builder`, `@NoArgsConstructor`, `@AllArgsConstructor`
 - `service/bank/BankConnectionService.java` — Updated `createConnection()` to use `BankConnection.builder()` instead of setter chain
 - `service/bank/api/MockBankApiClient.java` — Updated `fetchAccount()` and `generateMockTransactions()` to use DTO builders
-- `test/util/TestDataBuilder.java` — Updated all build methods to use entity builders
+- `util/TestDataBuilder.java` — Updated all build methods to use entity builders
 
 ---
 
@@ -54,7 +54,7 @@ Merged the completed bank sync feature branch into main via pull request.
 
 ## 2026-03-26 — Bank Connection & Sync module (`ee1fe34`)
 
-**Commit:** `Implement bank connection sync flow with PostgreSQL-backed tests`
+**Commit:** `Implement bank connection sync flow with PostgreSQL`
 
 Full implementation of the bank connection and synchronization module.
 
@@ -73,12 +73,7 @@ Full implementation of the bank connection and synchronization module.
 - `service/bank/BankSyncService.java` — orchestrates sync flow with retry/backoff logic
 - `service/bank/api/BankApiClient.java` — interface abstracting the bank API
 - `service/bank/api/MockBankApiClient.java` — mock implementation with simulated failures (timeouts, rate limits, connection errors)
-- `test/integration/BankConnectionIntegrationTest.java` — integration tests against real PostgreSQL
-- `test/service/bank/BankConnectionServiceTest.java` — unit tests for connection service
-- `test/service/bank/BankSyncServiceTest.java` — unit tests for sync service
-- `test/service/bank/api/MockBankApiClientTest.java` — tests for mock API client
-- `test/util/TestDataBuilder.java` — utility class for building test fixtures
-- `test/resources/application-test.properties` — test profile pointing to `mint_test` database
+
 
 ### Changed
 - `entity/BankConnection.java` — added `syncStatus`, `syncErrorMessage`, `lastSyncAttempt`, `syncFailureCount` fields
@@ -88,9 +83,9 @@ Full implementation of the bank connection and synchronization module.
 
 ## 2026-03-25 — Transaction module (`9cd8c10`)
 
-**Commit:** `Add transaction module tests and PostgreSQL Docker setup`
+**Commit:** `Add transaction module and PostgreSQL Docker setup`
 
-Full implementation of the transaction module with REST API and tests.
+Full implementation of the transaction module with REST API.
 
 ### Added
 - `transaction/Transaction.java` — JPA entity: `amount`, `date`, `category`, `type`
@@ -98,17 +93,13 @@ Full implementation of the transaction module with REST API and tests.
 - `transaction/TransactionRepository.java` — JPA repository with `findByType` and `findByCategory`
 - `transaction/TransactionService.java` — CRUD operations and filtering logic
 - `transaction/TransactionController.java` — REST endpoints at `/api/transactions`
-- `transaction/SecurityConfig.java` — Spring Security config (all requests permitted for now)
+- `transaction/SecurityConfig.java` — Spring Security config
 - `POSTGRES_SETUP.md` — manual PostgreSQL setup guide
 - `docker-compose.yml` — PostgreSQL 16 container definition
-- `test/transaction/TransactionControllerTest.java`
-- `test/transaction/TransactionRepositoryTest.java`
-- `test/transaction/TransactionServiceTest.java`
 
 ### Changed
-- `pom.xml` — added PostgreSQL driver, H2 test dependency, Lombok
+- `pom.xml` — added PostgreSQL driver and Lombok
 - `resources/application.properties` — configured PostgreSQL datasource
-- `test/MintApplicationTests.java` — updated for Spring context load test
 
 ---
 

@@ -1,0 +1,14 @@
+meta {
+  name: List Budgets
+  type: http
+  seq: 6
+}
+
+get {
+  url: {{baseUrl}}/api/budgets
+}
+
+headers {
+  Authorization: Bearer {{token}}
+}
+

@@ -1,0 +1,23 @@
+meta {
+  name: Update Budget
+  type: http
+  seq: 9
+}
+
+put {
+  url: {{baseUrl}}/api/budgets/{{budgetId}}
+  body: json
+}
+
+headers {
+  Authorization: Bearer {{token}}
+  Content-Type: application/json
+}
+
+body:json {
+  {
+    "category": "Groceries",
+    "monthlyLimit": 950
+  }
+}
+

@@ -1,0 +1,10 @@
+meta {
+  name: Setup MFA
+  type: http
+  seq: 4
+}
+
+post {
+  url: {{baseUrl}}/auth/mfa/setup?userId={{userId}}
+}
+

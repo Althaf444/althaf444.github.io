@@ -1,0 +1,14 @@
+meta {
+  name: Budget Overview
+  type: http
+  seq: 11
+}
+
+get {
+  url: {{baseUrl}}/api/budgets/overview?year={{year}}&month={{month}}
+}
+
+headers {
+  Authorization: Bearer {{token}}
+}
+

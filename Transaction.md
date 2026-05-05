@@ -18,7 +18,7 @@ The `Transaction` class represents a financial transaction in the system.
 **Annotations:**
 - `@Entity` - JPA entity
 - `@Table(name = "transactions")` - Database table mapping
-- Lombok annotations for getters, setters, constructors, and builders
+- Manual getters, setters, constructors, and builders
 
 ### TransactionType Enum
 Defines the type of transaction.
@@ -77,9 +77,7 @@ REST API controller providing HTTP endpoints for transaction management.
 ## Dependencies
 - Spring Boot Web
 - Spring Data JPA
-- Lombok
 - PostgreSQL (production database)
-- H2 (for testing, if applicable)
 
 ## Usage Example
 ```json

@@ -1,0 +1,21 @@
+meta {
+  name: Verify MFA Setup
+  type: http
+  seq: 5
+}
+
+post {
+  url: {{baseUrl}}/auth/mfa/verify?userId={{userId}}
+  body: json
+}
+
+headers {
+  Content-Type: application/json
+}
+
+body:json {
+  {
+    "code": "{{mfaCode}}"
+  }
+}
+

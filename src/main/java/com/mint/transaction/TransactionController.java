@@ -1,16 +1,18 @@
 package com.mint.transaction;
 
-import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
 @RequestMapping("/api/transactions")
-@RequiredArgsConstructor
 public class TransactionController {
 
     private final TransactionService transactionService;
+
+    public TransactionController(TransactionService transactionService) {
+        this.transactionService = transactionService;
+    }
 
     @GetMapping
     public List<Transaction> getAll() {

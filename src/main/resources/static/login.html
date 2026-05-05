@@ -1,0 +1,256 @@
+<!DOCTYPE html>
+
+<html class="light" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Sign In - BudgetFlow</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;600;700;800&amp;family=Inter:wght@400;600;700&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script>
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    "colors": {
+                        "surface-variant": "#dce2f3",
+                        "surface-container-highest": "#dce2f3",
+                        "surface-container-low": "#f0f3ff",
+                        "tertiary-fixed-dim": "#ffb3af",
+                        "primary-fixed": "#6ffbbe",
+                        "on-tertiary-container": "#711419",
+                        "on-primary": "#ffffff",
+                        "primary": "#006c49",
+                        "tertiary": "#a43a3a",
+                        "on-error-container": "#93000a",
+                        "tertiary-fixed": "#ffdad7",
+                        "secondary-container": "#adedd3",
+                        "surface-container": "#e7eefe",
+                        "on-secondary-fixed": "#002117",
+                        "background": "#f9f9ff",
+                        "error-container": "#ffdad6",
+                        "secondary": "#2b6954",
+                        "on-error": "#ffffff",
+                        "outline": "#6c7a71",
+                        "on-secondary-fixed-variant": "#0b513d",
+                        "on-tertiary": "#ffffff",
+                        "on-tertiary-fixed-variant": "#842225",
+                        "tertiary-container": "#fc7c78",
+                        "on-primary-container": "#00422b",
+                        "on-surface": "#151c27",
+                        "on-secondary": "#ffffff",
+                        "surface-container-lowest": "#ffffff",
+                        "primary-container": "#10b981",
+                        "surface-tint": "#006c49",
+                        "surface-container-high": "#e2e8f8",
+                        "surface-bright": "#f9f9ff",
+                        "on-primary-fixed": "#002113",
+                        "primary-fixed-dim": "#4edea3",
+                        "inverse-on-surface": "#ebf1ff",
+                        "on-primary-fixed-variant": "#005236",
+                        "on-tertiary-fixed": "#410005",
+                        "on-secondary-container": "#306d58",
+                        "surface-dim": "#d3daea",
+                        "surface": "#f9f9ff",
+                        "on-background": "#151c27",
+                        "inverse-surface": "#2a313d",
+                        "inverse-primary": "#4edea3",
+                        "on-surface-variant": "#3c4a42",
+                        "secondary-fixed": "#b0f0d6",
+                        "secondary-fixed-dim": "#95d3ba",
+                        "outline-variant": "#bbcabf",
+                        "error": "#ba1a1a"
+                    },
+                    "borderRadius": {
+                        "DEFAULT": "0.125rem",
+                        "lg": "0.25rem",
+                        "xl": "0.5rem",
+                        "full": "0.75rem"
+                    },
+                    "spacing": {
+                        "gutter": "24px",
+                        "xs": "4px",
+                        "3xl": "64px",
+                        "lg": "24px",
+                        "2xl": "48px",
+                        "md": "16px",
+                        "base": "4px",
+                        "sm": "8px",
+                        "xl": "32px",
+                        "container-max": "1280px"
+                    },
+                    "fontFamily": {
+                        "h3": ["Manrope"],
+                        "numeric-lg": ["Inter"],
+                        "h2": ["Manrope"],
+                        "body-lg": ["Inter"],
+                        "body-md": ["Inter"],
+                        "body-sm": ["Inter"],
+                        "h1": ["Manrope"],
+                        "label-md": ["Inter"]
+                    },
+                    "fontSize": {
+                        "h3": ["24px", {"lineHeight": "32px", "letterSpacing": "-0.01em", "fontWeight": "600"}],
+                        "numeric-lg": ["24px", {"lineHeight": "32px", "fontWeight": "700"}],
+                        "h2": ["32px", {"lineHeight": "40px", "letterSpacing": "-0.02em", "fontWeight": "700"}],
+                        "body-lg": ["18px", {"lineHeight": "28px", "fontWeight": "400"}],
+                        "body-md": ["16px", {"lineHeight": "24px", "fontWeight": "400"}],
+                        "body-sm": ["14px", {"lineHeight": "20px", "fontWeight": "400"}],
+                        "h1": ["40px", {"lineHeight": "48px", "letterSpacing": "-0.02em", "fontWeight": "700"}],
+                        "label-md": ["14px", {"lineHeight": "20px", "fontWeight": "600"}]
+                    }
+                },
+            },
+        }
+    </script>
+<style>
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+        .login-card-glow {
+            box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.05);
+        }
+        .input-focus-ring:focus {
+            outline: none;
+            border-color: #006c49;
+            box-shadow: 0 0 0 2px rgba(0, 108, 73, 0.2);
+        }
+    </style>
+</head>
+<body class="bg-background font-body-md text-on-background min-h-screen flex flex-col">
+<!-- Top Navigation Suppression: As per rules, we hide the Shell for Transactional screens like Login -->
+<main class="flex-grow flex items-center justify-center px-lg py-3xl lg:w-1/2">
+<div class="max-w-md w-full">
+<!-- Brand Identity -->
+<div class="text-center mb-xl">
+<div class="inline-flex items-center gap-sm mb-md">
+<span class="material-symbols-outlined text-primary text-h1" data-icon="account_balance_wallet" style="font-variation-settings: 'FILL' 1;">account_balance_wallet</span>
+<h1 class="font-h1 text-h1 text-on-surface tracking-tight">BudgetFlow</h1>
+</div>
+<p class="font-body-lg text-on-surface-variant">Precision through Clarity. Manage your financial core with absolute control.</p>
+</div>
+<!-- Login Card -->
+<div class="bg-surface-container-lowest border border-outline-variant rounded-xl p-xl login-card-glow">
+<div class="flex items-center justify-between mb-xl">
+<h2 class="font-h3 text-h3 text-on-surface">Sign In</h2>
+<div class="flex items-center gap-xs px-sm py-xs bg-secondary-container/30 text-on-secondary-container rounded-full">
+<span class="material-symbols-outlined text-sm" data-icon="verified_user" style="font-variation-settings: 'FILL' 1;">verified_user</span>
+<span class="font-label-md text-xs">Secure Session</span>
+</div>
+</div>
+<form id="loginForm" class="space-y-lg">
+<!-- Email/Username Field -->
+<div class="space-y-xs">
+<label class="block font-label-md text-on-surface-variant ml-xs" for="email">Username</label>
+<div class="relative">
+<span class="material-symbols-outlined absolute left-md top-1/2 -translate-y-1/2 text-outline" data-icon="person">person</span>
+<input class="w-full pl-xl pr-md py-md bg-white border border-outline-variant rounded-lg font-body-md input-focus-ring transition-all placeholder:text-outline/50" id="email" placeholder="testuser" type="text" required/>
+</div>
+</div>
+<!-- Password Field -->
+<div class="space-y-xs">
+<div class="flex justify-between items-center px-xs">
+<label class="block font-label-md text-on-surface-variant" for="password">Password</label>
+<a class="text-primary font-label-md hover:underline transition-all" href="#">Forgot Password?</a>
+</div>
+<div class="relative">
+<span class="material-symbols-outlined absolute left-md top-1/2 -translate-y-1/2 text-outline" data-icon="lock">lock</span>
+<input class="w-full pl-xl pr-md py-md bg-white border border-outline-variant rounded-lg font-body-md input-focus-ring transition-all" id="password" placeholder="••••••••" type="password" required/>
+<button class="absolute right-md top-1/2 -translate-y-1/2 text-outline hover:text-primary" type="button">
+<span class="material-symbols-outlined" data-icon="visibility">visibility</span>
+</button>
+</div>
+</div>
+<!-- Sign In Button -->
+<button class="w-full bg-primary text-on-primary font-label-md py-md rounded-lg flex items-center justify-center gap-sm hover:bg-primary/90 active:scale-[0.98] transition-all" type="submit">
+<span>Sign In to Dashboard</span>
+<span class="material-symbols-outlined text-sm" data-icon="arrow_forward">arrow_forward</span>
+</button>
+<div id="error-message" class="hidden text-error mt-4 font-label-md text-center"></div>
+</form>
+<!-- Divider -->
+<div class="relative my-xl">
+<div class="absolute inset-0 flex items-center"><div class="w-full border-t border-outline-variant"></div></div>
+<div class="relative flex justify-center"><span class="bg-surface-container-lowest px-md font-label-md text-outline">Or continue with</span></div>
+</div>
+<!-- Social Logins -->
+<div class="grid grid-cols-2 gap-md">
+<button class="flex items-center justify-center gap-sm py-md px-md border border-outline-variant rounded-lg hover:bg-surface-container-low transition-all active:scale-[0.98]">
+<img alt="Google" class="w-5 h-5" data-alt="The official multi-colored Google logo icon rendered on a clean white background, symbolizing modern digital accessibility and universal connectivity. The lighting is flat and graphic, maintaining the integrity of the brand's primary color palette within a professional financial interface." src="https://lh3.googleusercontent.com/aida-public/AB6AXuA30Jqgq3wu1egstS04UrkyG21Awl4MIhlUWda_XfCKzhkwxoVS_OjFh1_L0upfshCGhG0qm7e3uFwkRWnZXRkhthrggpOPgDQj8VH5Geg4VGJRscFVBjtu4D0r4_DNngIN5y8fYodwNgrUExHXVRMLdmGp7uIOp1Ac3VP6e4ks4mlmvJwbmmjTweyUdRr52Prt1Dv_vMPWYyKiZ9Zq-KQUzyYj8TBTFaX373JO-tly5orT5HNRs11rR4GSAiYfFmBpPrXWiHPFg9o"/>
+<span class="font-label-md text-on-surface-variant">Google</span>
+</button>
+<button class="flex items-center justify-center gap-sm py-md px-md border border-outline-variant rounded-lg hover:bg-surface-container-low transition-all active:scale-[0.98]">
+<span class="material-symbols-outlined text-on-surface" data-icon="apple" style="font-variation-settings: 'FILL' 1;">ios</span>
+<span class="font-label-md text-on-surface-variant">Apple</span>
+</button>
+</div>
+</div>
+<!-- Footer Link -->
+<p class="text-center mt-xl font-body-sm text-on-surface-variant">
+                New to BudgetFlow? <a class="text-primary font-label-md hover:underline" href="#">Create an account</a>
+</p>
+</div>
+</main>
+<!-- Side Graphic for Desktop Layout -->
+<div class="hidden lg:fixed lg:right-0 lg:top-0 lg:w-1/2 lg:h-full lg:block">
+<div class="w-full h-full relative overflow-hidden bg-primary-container">
+<img class="absolute inset-0 w-full h-full object-cover mix-blend-overlay opacity-30" data-alt="A clean, minimalist high-angle shot of a sleek modern workspace featuring a metallic laptop, a textured leather notebook, and a designer fountain pen on a white desk. The lighting is soft and natural, coming from a side window, creating elegant long shadows and a calm, professional atmosphere. The color palette is dominated by airy whites and professional silvers, perfectly aligning with a sophisticated financial brand identity." src="https://lh3.googleusercontent.com/aida-public/AB6AXuB7_ujVHB2w-K3lgziYtppM2MPYDLJICdNgIEVDL1XyrORuB014UlqvizB6VD3M28C4_V4zk73KEPtALnqWGV-sACka49-Fu5r05RyE4FCK8899bwCaK8kAAUvgkiYcvlALNGIm31wUSxpfz1hTQzz9SDTZg_YDT9sgcBTL0DOHHH5hy8B8S5YR3lMVIGniWrwzJG2zBpb9NY5OvBHsnVeBWK5Hpgt0f0DUBCCVyOkT4JkvsWmRszBbHoU5SmfSMUybOwhqBCY8M4Q"/>
+<div class="absolute inset-0 flex flex-col justify-center items-start px-3xl space-y-xl">
+<div class="bg-white/10 backdrop-blur-md p-xl rounded-xl border border-white/20 max-w-lg">
+<h3 class="font-h2 text-h2 text-on-primary mb-md">"The best way to predict your future is to create it."</h3>
+<p class="font-body-lg text-on-primary/80">Join over 2 million users optimizing their financial growth through our precision budgeting framework.</p>
+</div>
+<div class="flex gap-lg">
+<div class="flex flex-col">
+<span class="font-numeric-lg text-h3 text-on-primary">$12B+</span>
+<span class="font-label-md text-on-primary/60">Assets Tracked</span>
+</div>
+<div class="w-px h-12 bg-white/20"></div>
+<div class="flex flex-col">
+<span class="font-numeric-lg text-h3 text-on-primary">99.9%</span>
+<span class="font-label-md text-on-primary/60">Uptime Reliability</span>
+</div>
+</div>
+</div>
+</div>
+</div>
+<script>
+    document.getElementById('loginForm').addEventListener('submit', async function(e) {
+        e.preventDefault();
+        const username = document.getElementById('email').value;
+        const password = document.getElementById('password').value;
+        const errorMessage = document.getElementById('error-message');
+
+        try {
+            const response = await fetch('/auth/login', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({ username, password })
+            });
+
+            if (response.ok) {
+                const data = await response.text();
+                // Check if it requires MFA
+                if (data.includes('requiresMfa: true')) {
+                    window.location.href = '/mfa.html';
+                } else {
+                    // Extract token and save to localStorage (optional/basic logic)
+                    const token = data.split('Token: ')[1]?.split(',')[0];
+                    if (token) localStorage.setItem('jwt_token', token);
+                    window.location.href = '/dash_board.html';
+                }
+            } else {
+                const errText = await response.text();
+                errorMessage.textContent = errText || 'Invalid credentials';
+                errorMessage.classList.remove('hidden');
+            }
+        } catch (err) {
+            errorMessage.textContent = 'Server error. Try again.';
+            errorMessage.classList.remove('hidden');
+        }
+    });
+</script>
+</body></html>

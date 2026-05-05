@@ -1,0 +1,14 @@
+meta {
+  name: Transactions By Category
+  type: http
+  seq: 18
+}
+
+get {
+  url: {{baseUrl}}/api/transactions/category/Groceries
+}
+
+headers {
+  Authorization: Bearer {{token}}
+}
+

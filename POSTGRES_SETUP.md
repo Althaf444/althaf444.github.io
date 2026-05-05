@@ -46,7 +46,6 @@ You should see a container named `mint-postgres`.
 | Database | `mint_db` |
 | Username | `mint_user` |
 | Password | `mint_password` |
-| Test database | `mint_test` |
 
 ---
 
@@ -70,15 +69,6 @@ The app starts at `http://localhost:8080`.
 
 ---
 
-## 5. Run tests
-
-Tests connect to a separate `mint_test` database (configured in `src/test/resources/application-test.properties`). Make sure the Docker container is running before executing tests.
-
-```bash
-./mvnw test
-```
-
----
 
 ## Useful Docker commands
 

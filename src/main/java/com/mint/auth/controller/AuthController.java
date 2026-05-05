@@ -20,11 +20,13 @@ public class AuthController {
     }
 
     @PostMapping("/login")
-    public ResponseEntity<String> login(@RequestBody LoginRequestDto request) {
+    public ResponseEntity<?> login(@RequestBody LoginRequestDto request) {
         try {
             LoginResponseDto response = authService.login(request);
-            return ResponseEntity.ok("Token: " + response.getToken() + ", requiresMfa: " + response.isRequiresMfa());
+            // Return structured JSON: { token, requiresMfa }
+            return ResponseEntity.ok(response);
         } catch (Exception e) {
+            // Return a simple error message on failure
             return ResponseEntity.badRequest().body("Error: " + e.getMessage());
         }
     }

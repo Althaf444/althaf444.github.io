@@ -1,0 +1,23 @@
+meta {
+  name: Login With MFA Code
+  type: http
+  seq: 3
+}
+
+post {
+  url: {{baseUrl}}/auth/login
+  body: json
+}
+
+headers {
+  Content-Type: application/json
+}
+
+body:json {
+  {
+    "username": "{{username}}",
+    "password": "{{password}}",
+    "mfaCode": "{{mfaCode}}"
+  }
+}
+

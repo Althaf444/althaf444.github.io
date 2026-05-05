@@ -1,0 +1,14 @@
+meta {
+  name: Transactions By Type
+  type: http
+  seq: 17
+}
+
+get {
+  url: {{baseUrl}}/api/transactions/type/EXPENSE
+}
+
+headers {
+  Authorization: Bearer {{token}}
+}
+

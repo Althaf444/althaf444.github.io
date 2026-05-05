@@ -1,0 +1,128 @@
+{
+  "info": {
+    "name": "Mint API - Postman",
+    "_postman_id": "mint-api-collection",
+    "description": "Postman collection for Mint API (local). Import into Postman or Bruno.",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+  },
+  "item": [
+    {
+      "name": "Auth",
+      "item": [
+        {
+          "name": "Register",
+          "request": {
+            "method": "POST",
+            "header": [
+              { "key": "Content-Type", "value": "application/json" }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"username\": \"{{username}}\",\n  \"email\": \"{{email}}\",\n  \"password\": \"{{password}}\"\n}"
+            },
+            "url": { "raw": "{{baseUrl}}/auth/register", "host": ["{{baseUrl}}"], "path": ["auth","register"] }
+          }
+        },
+        {
+          "name": "Login",
+          "request": {
+            "method": "POST",
+            "header": [ { "key": "Content-Type", "value": "application/json" } ],
+            "body": { "mode": "raw", "raw": "{\n  \"username\": \"{{username}}\",\n  \"password\": \"{{password}}\"\n}" },
+            "url": { "raw": "{{baseUrl}}/auth/login", "host": ["{{baseUrl}}"], "path": ["auth","login"] }
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "if (pm.response.code === 200) {",
+                  "  try {",
+                  "    var json = pm.response.json();",
+                  "    if (json.token) { pm.environment.set('token', json.token); pm.test('Saved token to environment', function(){pm.expect(json.token).to.not.be.empty;}); }",
+                  "  } catch (e) { pm.test('Response not JSON or missing token', function(){pm.expect(true).to.eql(false);}); }",
+                  "} else {",
+                  "  pm.test('Login failed', function(){pm.expect(pm.response.code).to.eql(200);});",
+                  "}"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "Login with MFA",
+          "request": {
+            "method": "POST",
+            "header": [ { "key": "Content-Type", "value": "application/json" } ],
+            "body": { "mode": "raw", "raw": "{\n  \"username\": \"{{username}}\",\n  \"password\": \"{{password}}\",\n  \"mfaCode\": \"{{mfaCode}}\"\n}" },
+            "url": { "raw": "{{baseUrl}}/auth/login", "host": ["{{baseUrl}}"], "path": ["auth","login"] }
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": { "exec": [ "if (pm.response.code === 200) { var json = pm.response.json(); if (json.token) pm.environment.set('token', json.token); }" ] }
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "MFA",
+      "item": [
+        {
+          "name": "Setup MFA",
+          "request": {
+            "method": "POST",
+            "url": { "raw": "{{baseUrl}}/auth/mfa/setup?userId={{userId}}", "host": ["{{baseUrl}}"], "path": ["auth","mfa","setup"], "query": [{"key":"userId","value":"{{userId}}"}] }
+          }
+        },
+        {
+          "name": "Verify MFA",
+          "request": {
+            "method": "POST",
+            "header": [ { "key": "Content-Type", "value": "application/json" }, { "key": "Authorization", "value": "Bearer {{token}}" } ],
+            "body": { "mode": "raw", "raw": "{ \"code\": \"{{mfaCode}}\" }" },
+            "url": { "raw": "{{baseUrl}}/auth/mfa/verify?userId={{userId}}", "host": ["{{baseUrl}}"], "path": ["auth","mfa","verify"], "query": [{"key":"userId","value":"{{userId}}"}] }
+          }
+        }
+      ]
+    },
+    {
+      "name": "Budgets",
+      "item": [
+        { "name": "List Budgets", "request": { "method": "GET", "header": [ { "key": "Authorization", "value": "Bearer {{token}}" } ], "url": { "raw": "{{baseUrl}}/api/budgets", "host": ["{{baseUrl}}"], "path": ["api","budgets"] } } },
+        { "name": "Create Budget", "request": { "method": "POST", "header": [ { "key": "Content-Type", "value": "application/json" }, { "key": "Authorization", "value": "Bearer {{token}}" } ], "body": { "mode": "raw", "raw": "{\n  \"category\": \"Groceries\",\n  \"monthlyLimit\": 800\n}" }, "url": { "raw": "{{baseUrl}}/api/budgets", "host": ["{{baseUrl}}"], "path": ["api","budgets"] } } },
+        { "name": "Get Budget", "request": { "method": "GET", "header": [ { "key": "Authorization", "value": "Bearer {{token}}" } ], "url": { "raw": "{{baseUrl}}/api/budgets/{{budgetId}}", "host": ["{{baseUrl}}"], "path": ["api","budgets","{{budgetId}}"] } } },
+        { "name": "Update Budget", "request": { "method": "PUT", "header": [ { "key": "Content-Type", "value": "application/json" }, { "key": "Authorization", "value": "Bearer {{token}}" } ], "body": { "mode": "raw", "raw": "{\n  \"category\": \"Groceries\",\n  \"monthlyLimit\": 950\n}" }, "url": { "raw": "{{baseUrl}}/api/budgets/{{budgetId}}", "host": ["{{baseUrl}}"], "path": ["api","budgets","{{budgetId}}"] } } },
+        { "name": "Delete Budget", "request": { "method": "DELETE", "header": [ { "key": "Authorization", "value": "Bearer {{token}}" } ], "url": { "raw": "{{baseUrl}}/api/budgets/{{budgetId}}", "host": ["{{baseUrl}}"], "path": ["api","budgets","{{budgetId}}"] } } },
+        { "name": "Budget Overview", "request": { "method": "GET", "header": [ { "key": "Authorization", "value": "Bearer {{token}}" } ], "url": { "raw": "{{baseUrl}}/api/budgets/overview?year={{year}}&month={{month}}", "host": ["{{baseUrl}}"], "path": ["api","budgets","overview"], "query": [ { "key": "year", "value": "{{year}}" }, { "key": "month", "value": "{{month}}" } ] } } }
+      ]
+    },
+    {
+      "name": "Transactions",
+      "item": [
+        { "name": "List Transactions", "request": { "method": "GET", "header": [ { "key": "Authorization", "value": "Bearer {{token}}" } ], "url": { "raw": "{{baseUrl}}/api/transactions", "host": ["{{baseUrl}}"], "path": ["api","transactions"] } } },
+        { "name": "Create Transaction", "request": { "method": "POST", "header": [ { "key": "Content-Type", "value": "application/json" }, { "key": "Authorization", "value": "Bearer {{token}}" } ], "body": { "mode": "raw", "raw": "{\n  \"amount\": 84.2,\n  \"date\": \"2026-05-05\",\n  \"category\": \"Groceries\",\n  \"type\": \"EXPENSE\"\n}" }, "url": { "raw": "{{baseUrl}}/api/transactions", "host": ["{{baseUrl}}"], "path": ["api","transactions"] } } },
+        { "name": "Get Transaction", "request": { "method": "GET", "header": [ { "key": "Authorization", "value": "Bearer {{token}}" } ], "url": { "raw": "{{baseUrl}}/api/transactions/{{transactionId}}", "host": ["{{baseUrl}}"], "path": ["api","transactions","{{transactionId}}"] } } },
+        { "name": "Update Transaction", "request": { "method": "PUT", "header": [ { "key": "Content-Type", "value": "application/json" }, { "key": "Authorization", "value": "Bearer {{token}}" } ], "body": { "mode": "raw", "raw": "{\n  \"amount\": 99.5,\n  \"date\": \"2026-05-06\",\n  \"category\": \"Groceries\",\n  \"type\": \"EXPENSE\"\n}" }, "url": { "raw": "{{baseUrl}}/api/transactions/{{transactionId}}", "host": ["{{baseUrl}}"], "path": ["api","transactions","{{transactionId}}"] } } },
+        { "name": "Delete Transaction", "request": { "method": "DELETE", "header": [ { "key": "Authorization", "value": "Bearer {{token}}" } ], "url": { "raw": "{{baseUrl}}/api/transactions/{{transactionId}}", "host": ["{{baseUrl}}"], "path": ["api","transactions","{{transactionId}}"] } } },
+        { "name": "By Type", "request": { "method": "GET", "header": [ { "key": "Authorization", "value": "Bearer {{token}}" } ], "url": { "raw": "{{baseUrl}}/api/transactions/type/EXPENSE", "host": ["{{baseUrl}}"], "path": ["api","transactions","type","EXPENSE"] } } },
+        { "name": "By Category", "request": { "method": "GET", "header": [ { "key": "Authorization", "value": "Bearer {{token}}" } ], "url": { "raw": "{{baseUrl}}/api/transactions/category/Groceries", "host": ["{{baseUrl}}"], "path": ["api","transactions","category","Groceries"] } } }
+      ]
+    }
+  ],
+  "variable": [
+    { "key": "baseUrl", "value": "http://localhost:8080" },
+    { "key": "username", "value": "testuser" },
+    { "key": "email", "value": "testuser@example.com" },
+    { "key": "password", "value": "Password123!" },
+    { "key": "mfaCode", "value": "123456" },
+    { "key": "userId", "value": "1" },
+    { "key": "budgetId", "value": "1" },
+    { "key": "transactionId", "value": "1" },
+    { "key": "token", "value": "" },
+    { "key": "year", "value": "2026" },
+    { "key": "month", "value": "5" }
+  ]
+}
+

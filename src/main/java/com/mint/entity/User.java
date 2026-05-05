@@ -1,6 +1,6 @@
 package com.mint.entity;
 
-import jakarta.persistence.*;
+import javax.persistence.*;
 import java.util.List;
 
 @Entity // Đánh dấu class này là một Thực thể kết nối với Database

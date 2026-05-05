@@ -1,20 +1,12 @@
 package com.mint.budget.dto;
 
-import jakarta.validation.constraints.DecimalMin;
-import jakarta.validation.constraints.NotBlank;
-import jakarta.validation.constraints.NotNull;
-import jakarta.validation.constraints.Size;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import javax.validation.constraints.DecimalMin;
+import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Size;
 
 import java.math.BigDecimal;
 
-@Data
-@Builder
-@NoArgsConstructor
-@AllArgsConstructor
 public class BudgetRequestDto {
 
     @NotBlank
@@ -24,4 +16,48 @@ public class BudgetRequestDto {
     @NotNull
     @DecimalMin(value = "0.0", inclusive = true)
     private BigDecimal monthlyLimit;
+
+    // Getters and setters
+    public String getCategory() {
+        return category;
+    }
+
+    public void setCategory(String category) {
+        this.category = category;
+    }
+
+    public BigDecimal getMonthlyLimit() {
+        return monthlyLimit;
+    }
+
+    public void setMonthlyLimit(BigDecimal monthlyLimit) {
+        this.monthlyLimit = monthlyLimit;
+    }
+
+    // Builder
+    public static Builder builder() {
+        return new Builder();
+    }
+
+    public static class Builder {
+        private String category;
+        private BigDecimal monthlyLimit;
+
+        public Builder category(String category) {
+            this.category = category;
+            return this;
+        }
+
+        public Builder monthlyLimit(BigDecimal monthlyLimit) {
+            this.monthlyLimit = monthlyLimit;
+            return this;
+        }
+
+        public BudgetRequestDto build() {
+            BudgetRequestDto dto = new BudgetRequestDto();
+            dto.category = this.category;
+            dto.monthlyLimit = this.monthlyLimit;
+            return dto;
+        }
+    }
 }
