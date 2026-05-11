@@ -1,6 +1,6 @@
 package com.mint.budget;
 
-import javax.persistence.*;
+import jakarta.persistence.*;
 
 import java.math.BigDecimal;
 
